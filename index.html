@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>English to Bangla Dictionary</title>
+<meta name="theme-color" content="#e9e1fb">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Dictionary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Nunito:wght@400;600;700&family=Noto+Sans+Bengali:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#efe8ff; --bg2:#ffe6ef; --bg3:#e2f6ee;
+  --card:rgba(255,255,255,.78); --ink:#3b3552; --muted:#6d6785; --line:#e4dcf5;
+  --violet:#6b4fbb; --rose:#b0426a; --violet-soft:#ece5ff; --focus:#6b4fbb;
+  --t0:#f1ebff; --t1:#e1f6ec; --t2:#ffeede; --t3:#e1f0fc; --t4:#ffe6ef;
+  --shadow:0 8px 24px rgba(120,96,180,.14);
+  --serif:"Fraunces",Georgia,serif;
+  --sans:"Nunito",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --bn:"Noto Sans Bengali","Kalpurush","Siyam Rupali",sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg1:#241f3a; --bg2:#2e2036; --bg3:#1d2d2c; --card:rgba(46,40,72,.82); --ink:#f1ecff; --muted:#b4abd0; --line:#3e3760;
+    --violet:#cdbcff; --rose:#ff9fc0; --violet-soft:#3a3160; --focus:#cdbcff;
+    --t0:#322a55; --t1:#21403a; --t2:#4a3430; --t3:#233a55; --t4:#4a2c40; --shadow:0 8px 24px rgba(0,0,0,.35);}
+}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+html{background:var(--bg1)}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:var(--sans);line-height:1.6;
+  background:radial-gradient(900px 500px at 8% -5%,var(--bg2),transparent 60%),radial-gradient(800px 500px at 100% 10%,var(--bg3),transparent 60%),var(--bg1);
+  background-attachment:fixed}
+main{max-width:740px;margin:0 auto;padding:36px 18px 80px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h1{font-family:var(--serif);font-size:2rem;line-height:1.15;margin:0}
+h1 .bn{display:block;font-size:1.05rem;font-weight:600;color:var(--rose);margin-top:4px}
+.sub{color:var(--muted);margin:10px 0 18px}
+.search{position:sticky;top:0;padding:10px 0;z-index:2;backdrop-filter:blur(8px)}
+#q{width:100%;font:inherit;font-size:1.2rem;padding:15px 20px;border-radius:999px;border:2px solid transparent;background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
+#q::placeholder{color:var(--muted)}
+#q:focus-visible{outline:none;border-color:var(--focus)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px 22px;margin-top:16px;box-shadow:var(--shadow)}
+.card.hero{background:linear-gradient(135deg,var(--t0),var(--t4))}
+.card.t0{background:var(--t0)} .card.t1{background:var(--t1)} .card.t2{background:var(--t2)} .card.t3{background:var(--t3)} .card.t4{background:var(--t4)}
+.head{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px}
+.word{font-family:var(--serif);font-size:2.4rem;line-height:1.1;font-weight:700;margin:0}
+.bn{font-family:var(--bn);color:var(--violet);font-weight:600}
+.big{font-size:1.9rem;line-height:1.5}
+.pron{color:var(--muted)}
+button.say{font:inherit;font-weight:600;border:0;background:var(--violet-soft);color:var(--violet);border-radius:999px;padding:6px 16px;cursor:pointer;transition:transform .12s}
+button.say:hover{transform:translateY(-1px)}
+button:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.alts{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:var(--bn);background:var(--violet-soft);color:var(--violet);padding:4px 14px;border-radius:999px}
+h2{font-family:var(--serif);font-size:1.15rem;margin:0 0 8px;font-style:italic;color:var(--rose)}
+.def{padding:12px 0;border-top:1px solid rgba(120,96,180,.18)}
+.def:first-of-type{border-top:0}
+.def p{margin:2px 0}
+.ex{color:var(--muted)}
+.forms{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.forms div{background:rgba(255,255,255,.6);border-radius:14px;padding:8px 14px;font-weight:600}
+@media (prefers-color-scheme:dark){.forms div{background:rgba(255,255,255,.08)}}
+.forms small{display:block;color:var(--muted);font-weight:400}
+.syn{color:var(--muted);font-size:.95rem}
+.note,.msg{color:var(--muted);margin-top:16px}
+.note{font-size:.9rem;text-align:center;margin-top:28px}
+.msg.err{color:var(--rose)}
+button.hbtn{font-family:var(--sans),var(--bn);border:0;cursor:pointer;font-size:.95rem;transition:transform .12s}
+button.hbtn:hover{transform:translateY(-1px)}
+.hist{margin:6px 0 0;align-items:center}
+.load{opacity:.5}
+@media (prefers-reduced-motion:reduce){button{transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+  <div class="top"><h1>English to Bangla dictionary<span class="bn">শব্দকোষ</span></h1><button class="say" id="install" type="button" hidden>Install app</button></div>
+  <p class="sub">Type an English word for its Bangla meaning, or a Bangla word to find the English.</p>
+  <div class="search">
+    <input id="q" type="search" placeholder="Try: run, beautiful, or ভালো" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="English or Bangla word">
+  </div>
+  <div id="hist" class="alts hist"></div>
+  <div id="out" aria-live="polite"></div>
+  <p class="note">Bangla meanings come from MyMemory (machine translation), so double check important words. English definitions come from the Free Dictionary API.</p>
+</main>
+
+<script>
+const $ = s => document.querySelector(s);
+const input = $('#q'), out = $('#out');
+const hasBn = s => /[\u0980-\u09FF]/.test(s || '');
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const cache = new Map();
+let timer, run = 0;
+
+/* ---------- Bangla translation (MyMemory, free, no key) ---------- */
+async function translate(text, wantAlts = false) {
+  const key = text + '|' + wantAlts;
+  if (cache.has(key)) return cache.get(key);
+  try {
+    const r = await fetch('https://api.mymemory.translated.net/get?q=' + encodeURIComponent(text) + '&langpair=en|bn');
+    const d = await r.json();
+    let main = d.responseData && d.responseData.translatedText;
+    if (!hasBn(main)) main = '';
+    let alts = [];
+    if (wantAlts) {
+      alts = (d.matches || [])
+        .filter(m => String(m.segment || '').toLowerCase() === text.toLowerCase() && hasBn(m.translation))
+        .map(m => m.translation.trim());
+    }
+    const res = { main, alts: [...new Set([main, ...alts].filter(Boolean))].slice(0, 6) };
+    cache.set(key, res);
+    return res;
+  } catch (e) { return { main: '', alts: [] }; }
+}
+
+/* ---------- English dictionary (dictionaryapi.dev, free) ---------- */
+async function lookup(word) {
+  const r = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + encodeURIComponent(word));
+  if (!r.ok) return null;
+  return r.json();
+}
+
+/* ---------- Verb forms ---------- */
+const IRR = {};
+('be:was/were:been,have:had:had,do:did:done,go:went:gone,see:saw:seen,take:took:taken,make:made:made,come:came:come,get:got:got,give:gave:given,know:knew:known,think:thought:thought,say:said:said,eat:ate:eaten,write:wrote:written,run:ran:run,begin:began:begun,buy:bought:bought,bring:brought:brought,teach:taught:taught,find:found:found,tell:told:told,leave:left:left,keep:kept:kept,sit:sat:sat,stand:stood:stood,speak:spoke:spoken,read:read:read,drink:drank:drunk,sing:sang:sung,swim:swam:swum,fall:fell:fallen,forget:forgot:forgotten,choose:chose:chosen,break:broke:broken,drive:drove:driven,fly:flew:flown,grow:grew:grown,hold:held:held,lose:lost:lost,meet:met:met,pay:paid:paid,put:put:put,send:sent:sent,sleep:slept:slept,win:won:won,wear:wore:worn,sell:sold:sold,build:built:built,catch:caught:caught,draw:drew:drawn,feel:felt:felt,hear:heard:heard,let:let:let,cut:cut:cut,set:set:set,hit:hit:hit,hurt:hurt:hurt,cost:cost:cost,shut:shut:shut')
+  .split(',').forEach(x => { const [b, p, pp] = x.split(':'); IRR[b] = [p, pp]; });
+
+function verbForms(w) {
+  w = w.toLowerCase();
+  const third = w === 'have' ? 'has' : w === 'be' ? 'is' :
+    /(s|x|z|ch|sh|o)$/.test(w) ? w + 'es' :
+    /[^aeiou]y$/.test(w) ? w.slice(0, -1) + 'ies' : w + 's';
+  const dbl = /^[^aeiou]*[aeiou][^aeiouwxy]$/.test(w);
+  let ing = w === 'be' ? 'being' :
+    /ie$/.test(w) ? w.slice(0, -2) + 'ying' :
+    /[^e]e$/.test(w) ? w.slice(0, -1) + 'ing' :
+    dbl ? w + w.slice(-1) + 'ing' : w + 'ing';
+  let past, pp;
+  if (IRR[w]) { [past, pp] = IRR[w]; }
+  else {
+    const ed = /e$/.test(w) ? w + 'd' : /[^aeiou]y$/.test(w) ? w.slice(0, -1) + 'ied' : dbl ? w + w.slice(-1) + 'ed' : w + 'ed';
+    past = pp = ed;
+  }
+  return [['Base form', w], ['He / she / it', third], ['Past', past], ['Past participle', pp], ['-ing form', ing]];
+}
+
+/* ---------- Bangla to English ---------- */
+async function toEnglish(text) {
+  try {
+    const r = await fetch('https://api.mymemory.translated.net/get?q=' + encodeURIComponent(text) + '&langpair=bn|en');
+    const d = await r.json();
+    const ok = s => /^[A-Za-z][A-Za-z '\-]*$/.test((s || '').trim());
+    const main = ok(d.responseData && d.responseData.translatedText) ? d.responseData.translatedText.trim() : '';
+    const more = (d.matches || [])
+      .filter(m => String(m.segment || '').trim() === text.trim() && ok(m.translation))
+      .map(m => m.translation.trim());
+    return [...new Set([main, ...more].filter(Boolean).map(s => s.toLowerCase()))].slice(0, 6);
+  } catch (e) { return []; }
+}
+
+/* ---------- Search history (saved in this browser only) ---------- */
+const HIST_KEY = 'bnDictHistory';
+function getHist() { try { return JSON.parse(localStorage.getItem(HIST_KEY)) || []; } catch (e) { return []; } }
+function addHist(w) {
+  try { localStorage.setItem(HIST_KEY, JSON.stringify([w, ...getHist().filter(x => x !== w)].slice(0, 10))); } catch (e) {}
+  renderHist();
+}
+function renderHist() {
+  const h = getHist();
+  $('#hist').innerHTML = h.length
+    ? '<span class="syn">Recent:</span>' + h.map(w => `<button type="button" class="chip hbtn">${esc(w)}</button>`).join('') +
+      '<button type="button" class="syn hbtn" id="clr" style="background:none">Clear</button>'
+    : '';
+}
+$('#hist').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.id === 'clr') { try { localStorage.removeItem(HIST_KEY); } catch (x) {} renderHist(); return; }
+  input.value = b.textContent; clearTimeout(timer); search(b.textContent);
+});
+
+/* ---------- Word of the day ---------- */
+const WORDS = 'serendipity,resilient,ephemeral,gratitude,curious,wander,harmony,persevere,candid,eloquent,humble,luminous,solitude,tranquil,vibrant,diligent,empathy,fortunate,genuine,horizon,inspire,jovial,kindle,legacy,mellow,nurture,optimistic,pioneer,radiant,sincere,thrive'.split(',');
+function showWotd() {
+  const w = WORDS[Math.floor(Date.now() / 864e5) % WORDS.length];
+  out.innerHTML = `<div class="card hero"><p class="syn" style="margin:0 0 4px">Word of the day</p><p class="word" style="margin:0">${w}</p><p class="bn" id="wb">…</p><button class="say" type="button" id="wgo">See full entry</button></div>`;
+  $('#wgo').onclick = () => { input.value = w; search(w); };
+  translate(w).then(r => { const el = $('#wb'); if (el) el.textContent = r.main || ''; });
+}
+
+/* ---------- Render ---------- */
+function say(word, audio) {
+  if (audio) { new Audio(audio).play().catch(() => speak(word)); } else speak(word);
+}
+function speak(word) {
+  if (!('speechSynthesis' in window)) return;
+  const u = new SpeechSynthesisUtterance(word); u.lang = 'en-US';
+  speechSynthesis.cancel(); speechSynthesis.speak(u);
+}
+
+async function search(raw) {
+  const q = raw.trim();
+  const id = ++run;
+  if (!q) { showWotd(); return; }
+  out.innerHTML = '<p class="msg">Looking it up…</p>';
+  if (hasBn(q)) {
+    const alts = await toEnglish(q);
+    if (id !== run) return;
+    if (!alts.length) {
+      out.innerHTML = `<div class="card"><p class="bn big" style="margin:0">${esc(q)}</p><p class="msg err">No English meaning found right now. Try another word, or try again later.</p></div>`;
+      return;
+    }
+    addHist(q);
+    out.innerHTML = `<div class="card"><p class="bn big" style="margin:0">${esc(q)}</p><p class="msg" style="margin:6px 0 0">English meanings</p><div class="alts">` +
+      alts.map(a => `<button type="button" class="chip hbtn en">${esc(a)}</button>`).join('') +
+      '</div><p class="syn" style="margin-bottom:0">Tap a word to see its full dictionary entry.</p></div>';
+    out.querySelectorAll('.en').forEach(b => b.onclick = () => { input.value = b.textContent; search(b.textContent); });
+    return;
+  }
+  const single = /^[a-zA-Z'\-]+$/.test(q);
+
+  const [bn, entries] = await Promise.all([translate(q, single), single ? lookup(q.toLowerCase()).catch(() => null) : null]);
+  if (id !== run) return;
+  if (bn.main || entries) addHist(q);
+
+  const banglaBlock = bn.main
+    ? `<div class="bn big">${esc(bn.main)}</div>` +
+      (bn.alts.length > 1 ? `<div class="alts">${bn.alts.slice(1).map(a => `<span class="chip">${esc(a)}</span>`).join('')}</div>` : '')
+    : '<p class="msg err">Could not get a Bangla translation right now. The free daily limit may be used up, so try again later.</p>';
+
+  if (!entries) {
+    out.innerHTML = `<div class="card"><p class="word">${esc(q)}</p>${banglaBlock}` +
+      (single ? '<p class="msg">No English dictionary entry found. Check the spelling.</p>' : '') + '</div>';
+    return;
+  }
+
+  const e = entries[0];
+  const ph = (e.phonetics || []).find(p => p.text) || {};
+  const audio = ((e.phonetics || []).find(p => p.audio) || {}).audio || '';
+  const pron = e.phonetic || ph.text || '';
+  const allMeanings = entries.flatMap(x => x.meanings || []);
+  const isVerb = allMeanings.some(m => m.partOfSpeech === 'verb');
+
+  let html = `<div class="card hero"><div class="head"><p class="word">${esc(e.word)}</p>` +
+    (pron ? `<span class="pron">${esc(pron)}</span>` : '') +
+    `<button class="say" id="sayBtn" type="button">Listen</button></div>${banglaBlock}</div>`;
+
+  let n = 0;
+  const jobs = [];
+  allMeanings.slice(0, 4).forEach((m, mi) => {
+    html += `<div class="card t${(mi + 1) % 4}"><h2>${esc(m.partOfSpeech)}</h2>`;
+    (m.definitions || []).slice(0, 2).forEach(d => {
+      const k = n++;
+      html += `<div class="def"><p>${esc(d.definition)}</p><p class="bn load" id="d${k}">…</p>`;
+      jobs.push(translate(d.definition).then(r => { const el = $('#d' + k); if (el) { el.textContent = r.main || ''; el.classList.remove('load'); } }));
+      if (d.example) {
+        html += `<p class="ex">Example: ${esc(d.example)}</p><p class="bn ex load" id="x${k}">…</p>`;
+        jobs.push(translate(d.example).then(r => { const el = $('#x' + k); if (el) { el.textContent = r.main || ''; el.classList.remove('load'); } }));
+      }
+      html += '</div>';
+    });
+    const syn = (m.synonyms || []).slice(0, 6);
+    if (syn.length) html += `<p class="syn">Similar words: ${esc(syn.join(', '))}</p>`;
+    html += '</div>';
+  });
+
+  if (isVerb) {
+    html += '<div class="card t2"><h2>Verb forms</h2><div class="forms">' +
+      verbForms(e.word).map(([l, v]) => `<div><small>${l}</small>${esc(v)}</div>`).join('') +
+      '</div><p class="syn" style="margin-bottom:0">Forms follow the usual rules plus common irregular verbs, so a rare verb may differ.</p></div>';
+  }
+
+  out.innerHTML = html;
+  $('#sayBtn').onclick = () => say(e.word, audio);
+  Promise.all(jobs);
+}
+
+input.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(() => search(input.value), 500); });
+input.addEventListener('keydown', e => { if (e.key === 'Enter') { clearTimeout(timer); search(input.value); } });
+renderHist();
+showWotd();
+
+/* ---------- Install as an app ---------- */
+let deferredInstall;
+addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredInstall = e; $('#install').hidden = false; });
+$('#install').onclick = async () => {
+  if (!deferredInstall) return;
+  deferredInstall.prompt();
+  await deferredInstall.userChoice;
+  deferredInstall = null; $('#install').hidden = true;
+};
+addEventListener('appinstalled', () => { $('#install').hidden = true; });
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(() => {});
+</script>
+</body>
+</html>
